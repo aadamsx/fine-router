@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'kadira:flow-router',
+  name: 'aadams:fine-router',
   summary: 'Carefully Designed Client Side Router for Meteor',
   version: '2.12.1',
-  git: 'https://github.com/kadirahq/flow-router.git'
+  git: 'https://github.com/aadamsx/fine-router.git'
 });
 
 Npm.depends({
