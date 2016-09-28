@@ -3,11 +3,11 @@
 
 Carefully Designed Client Side Router for Meteor.
 
+PLEASE NOTE: FineRouter is meant to continue where FlowRouter left off. All PRs will be considered.  Also, contributor roles are given upon request.  
+
 FineRouter is a very simple router for Meteor. It does routing for client-side apps and does not handle rendering itself.
 
 It exposes a great API for changing the URL and reactively getting data from the URL. However, inside the router, it's not reactive. Most importantly, FineRouter is designed with performance in mind and it focuses on what it does best: **routing**.
-
-> We've released 2.0 and follow this [migration guide](#migrating-into-20) if you are already using FineRouter.
 
 ## TOC
 
@@ -761,9 +761,9 @@ Migrating into version 2.0 is easy and you don't need to change any application 
 Here are the steps to migrate your app into 2.0.
 
 #### Use the New FineRouter Package
-* Now FineRouter comes as `kadira:flow-router`
+* Now FlowRouter comes as `aadams:fine-router`
 * So, remove `meteorhacks:flow-router` with : `meteor remove meteorhacks:flow-router`
-* Then, add `kadira:flow-router` with `meteor add kadira:flow-router`
+* Then, add `aadams:fine-router` with `meteor add aadams:fine-router`
 
 #### Change FlowLayout into BlazeLayout
 * We've also renamed FlowLayout as [BlazeLayout](https://github.com/kadirahq/blaze-layout).
