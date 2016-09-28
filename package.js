@@ -14,7 +14,7 @@ Npm.depends({
 
 Package.onUse(function(api) {
   configure(api);
-  api.export('FlowRouter');
+  api.export('FineRouter');
 });
 
 Package.onTest(function(api) {

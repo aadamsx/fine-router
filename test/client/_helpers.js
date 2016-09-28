@@ -7,4 +7,4 @@ GetSub = function (name) {
   }
 };
 
-FlowRouter.route('/');
+FineRouter.route('/');

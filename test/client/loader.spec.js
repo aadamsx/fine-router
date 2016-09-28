@@ -1,4 +1,4 @@
-Router = FlowRouter.Router;
+Router = FineRouter.Router;
 
 
 Tinytest.add('Client - import page.js', function (test) {
@@ -12,6 +12,6 @@ Tinytest.add('Client - import query.js', function (test) {
 });
 
 
-Tinytest.add('Client - create FlowRouter', function (test) {
-  test.isTrue(!!FlowRouter);
+Tinytest.add('Client - create FineRouter', function (test) {
+  test.isTrue(!!FineRouter);
 });

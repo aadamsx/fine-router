@@ -1,13 +1,13 @@
-# FlowRouter [![Build Status](https://travis-ci.org/kadirahq/flow-router.svg?branch=master)](https://travis-ci.org/kadirahq/flow-router) [![Stories in Ready](https://badge.waffle.io/kadirahq/flow-router.svg?label=doing&title=Activities)](http://waffle.io/kadirahq/flow-router)
+# FineRouter
 
 
 Carefully Designed Client Side Router for Meteor.
 
-FlowRouter is a very simple router for Meteor. It does routing for client-side apps and does not handle rendering itself.
+FineRouter is a very simple router for Meteor. It does routing for client-side apps and does not handle rendering itself.
 
-It exposes a great API for changing the URL and reactively getting data from the URL. However, inside the router, it's not reactive. Most importantly, FlowRouter is designed with performance in mind and it focuses on what it does best: **routing**.
+It exposes a great API for changing the URL and reactively getting data from the URL. However, inside the router, it's not reactive. Most importantly, FineRouter is designed with performance in mind and it focuses on what it does best: **routing**.
 
-> We've released 2.0 and follow this [migration guide](#migrating-into-20) if you are already using FlowRouter.
+> We've released 2.0 and follow this [migration guide](#migrating-into-20) if you are already using FineRouter.
 
 ## TOC
 
@@ -29,22 +29,22 @@ It exposes a great API for changing the URL and reactively getting data from the
 
 ## Meteor Routing Guide
 
-[Meteor Routing Guide](https://kadira.io/academy/meteor-routing-guide) is a completed guide into **routing** and related topics in Meteor. It talks about how to use FlowRouter properly and use it with **Blaze and React**. It also shows how to manage **subscriptions** and implement **auth logic** in the view layer.
+[Meteor Routing Guide](https://kadira.io/academy/meteor-routing-guide) is a completed guide into **routing** and related topics in Meteor. It talks about how to use FineRouter properly and use it with **Blaze and React**. It also shows how to manage **subscriptions** and implement **auth logic** in the view layer.
 
 [![Meteor Routing Guide](https://cldup.com/AxlPfoxXmR.png)](https://kadira.io/academy/meteor-routing-guide)
 
 ## Getting Started
 
-Add FlowRouter to your app:
+Add FineRouter to your app:
 
 ~~~shell
-meteor add kadira:flow-router
+meteor add aadams:fine-router
 ~~~
 
 Let's write our first route (add this file to `lib/router.js`):
 
 ~~~js
-FlowRouter.route('/blog/:postId', {
+FineRouter.route('/blog/:postId', {
     action: function(params, queryParams) {
         console.log("Yeah! We are on the post:", params.postId);
     }
@@ -54,19 +54,19 @@ FlowRouter.route('/blog/:postId', {
 Then visit `/blog/my-post-id` from the browser or invoke the following command from the browser console:
 
 ~~~js
-FlowRouter.go('/blog/my-post-id');
+FineRouter.go('/blog/my-post-id');
 ~~~
 
 Then you can see some messages printed in the console.
 
 ## Routes Definition
 
-FlowRouter routes are very simple and based on the syntax of [path-to-regexp](https://github.com/pillarjs/path-to-regexp) which is used in both [Express](http://expressjs.com/) and `iron:router`.
+FineRouter routes are very simple and based on the syntax of [path-to-regexp](https://github.com/pillarjs/path-to-regexp) which is used in both [Express](http://expressjs.com/) and `iron:router`.
 
 Here's the syntax for a simple route:
 
 ~~~js
-FlowRouter.route('/blog/:postId', {
+FineRouter.route('/blog/:postId', {
     // do some action for this route
     action: function(params, queryParams) {
         console.log("Params:", params);
@@ -80,7 +80,7 @@ FlowRouter.route('/blog/:postId', {
 So, this route will be activated when you visit a url like below:
 
 ~~~js
-FlowRouter.go('/blog/my-post?comments=on&color=dark');
+FineRouter.go('/blog/my-post?comments=on&color=dark');
 ~~~
 
 After you've visit the route, this will be printed in the console:
@@ -99,7 +99,7 @@ You can define routes anywhere in the `client` directory. But, we recommend to a
 You can group routes for better route organization. Here's an example:
 
 ~~~js
-var adminRoutes = FlowRouter.group({
+var adminRoutes = FineRouter.group({
   prefix: '/admin',
   name: 'admin',
   triggersEnter: [function(context, redirect) {
@@ -125,12 +125,12 @@ adminRoutes.route('/posts', {
 });
 ~~~
 
-**All of the options for the `FlowRouter.group()` are optional.**
+**All of the options for the `FineRouter.group()` are optional.**
 
 You can even have nested group routes as shown below:
 
 ~~~js
-var adminRoutes = FlowRouter.group({
+var adminRoutes = FineRouter.group({
     prefix: "/admin",
     name: "admin"
 });
@@ -151,20 +151,20 @@ superAdminRoutes.route('/post', {
 You can determine which group the current route is in using:
 
 ~~~js
-FlowRouter.current().route.group.name
+FineRouter.current().route.group.name
 ~~~
 
 This can be useful for determining if the current route is in a specific group (e.g. *admin*, *public*, *loggedIn*) without needing to use prefixes if you don't want to. If it's a nested group, you can get the parent group's name with:
 
 ~~~js
-FlowRouter.current().route.group.parent.name
+FineRouter.current().route.group.parent.name
 ~~~
 
-As with all current route properties, these are not reactive, but can be combined with `FlowRouter.watchPathChange()` to get group names reactively.
+As with all current route properties, these are not reactive, but can be combined with `FineRouter.watchPathChange()` to get group names reactively.
 
 ## Rendering and Layout Management
 
-FlowRouter does not handle rendering or layout management. For that, you can use:
+FineRouter does not handle rendering or layout management. For that, you can use:
 
   * [Blaze Layout for Blaze](https://github.com/kadirahq/blaze-layout)
   * [React Layout for React](https://github.com/kadirahq/meteor-react-layout)
@@ -172,7 +172,7 @@ FlowRouter does not handle rendering or layout management. For that, you can use
 Then you can invoke the layout manager inside the `action` method in the router.
 
 ~~~js
-FlowRouter.route('/blog/:postId', {
+FineRouter.route('/blog/:postId', {
     action: function(params) {
         BlazeLayout.render("mainLayout", {area: "blog"});
     }
@@ -181,14 +181,14 @@ FlowRouter.route('/blog/:postId', {
 
 ## Triggers
 
-Triggers are the way FlowRouter allows you to perform tasks before you **enter** into a route and after you **exit** from a route.
+Triggers are the way FineRouter allows you to perform tasks before you **enter** into a route and after you **exit** from a route.
 
 #### Defining triggers for a route
 
 Here's how you can define triggers for a route:
 
 ~~~js
-FlowRouter.route('/home', {
+FineRouter.route('/home', {
   // calls just before the action
   triggersEnter: [trackRouteEntry],
   action: function() {
@@ -200,7 +200,7 @@ FlowRouter.route('/home', {
 });
 
 function trackRouteEntry(context) {
-  // context is the output of `FlowRouter.current()`
+  // context is the output of `FineRouter.current()`
   Mixpanel.track("visit-to-home", context.queryParams);
 }
 
@@ -214,7 +214,7 @@ function trackRouteClose(context) {
 This is how you can define triggers on a group definition.
 
 ~~~js
-var adminRoutes = FlowRouter.group({
+var adminRoutes = FineRouter.group({
   prefix: '/admin',
   triggersEnter: [trackRouteEntry],
   triggersExit: [trackRouteEntry]
@@ -228,12 +228,12 @@ var adminRoutes = FlowRouter.group({
 You can also define triggers globally. Here's how to do it:
 
 ~~~js
-FlowRouter.triggers.enter([cb1, cb2]);
-FlowRouter.triggers.exit([cb1, cb2]);
+FineRouter.triggers.enter([cb1, cb2]);
+FineRouter.triggers.exit([cb1, cb2]);
 
 // filtering
-FlowRouter.triggers.enter([trackRouteEntry], {only: ["home"]});
-FlowRouter.triggers.exit([trackRouteExit], {except: ["home"]});
+FineRouter.triggers.enter([trackRouteEntry], {only: ["home"]});
+FineRouter.triggers.exit([trackRouteExit], {except: ["home"]});
 ~~~
 
 As you can see from the last two examples, you can filter routes using the `only` or `except` keywords. But, you can't use both `only` and `except` at once.
@@ -245,7 +245,7 @@ As you can see from the last two examples, you can filter routes using the `only
 You can redirect to a different route using triggers. You can do it from both enter and exit triggers. See how to do it:
 
 ~~~js
-FlowRouter.route('/', {
+FineRouter.route('/', {
   triggersEnter: [function(context, redirect) {
     redirect('/some-other-path');
   }],
@@ -261,14 +261,14 @@ Every trigger callback comes with a second argument: a function you can use to r
 * redirect must be called within the same event loop cycle (no async or called inside a Tracker)
 * redirect cannot be called multiple times
 
-Check this [PR](https://github.com/meteorhacks/flow-router/pull/172) to learn more about our redirect API.
+Check this [PR](https://github.com/meteorhacks/Fine-router/pull/172) to learn more about our redirect API.
 
 #### Stopping the Callback With Triggers
 
 In some cases, you may need to stop the route callback from firing using triggers. You can do this in **before** triggers, using the third argument: the `stop` function. For example, you can check the prefix and if it fails, show the notFound layout and stop before the action fires.
 
 ```js
-var localeGroup = FlowRouter.group({
+var localeGroup = FineRouter.group({
   prefix: '/:locale?',
   triggersEnter: [localeCheck]
 });
@@ -296,7 +296,7 @@ function localeCheck(context, redirect, stop) {
 You can configure Not Found routes like this:
 
 ~~~js
-FlowRouter.notFound = {
+FineRouter.notFound = {
     // Subscriptions registered here don't have Fast Render support.
     subscriptions: function() {
 
@@ -309,9 +309,9 @@ FlowRouter.notFound = {
 
 ## API
 
-FlowRouter has a rich API to help you to navigate the router and reactively get information from the router.
+FineRouter has a rich API to help you to navigate the router and reactively get information from the router.
 
-#### FlowRouter.getParam(paramName);
+#### FineRouter.getParam(paramName);
 
 Reactive function which you can use to get a parameter from the URL.
 
@@ -319,11 +319,11 @@ Reactive function which you can use to get a parameter from the URL.
 // route def: /apps/:appId
 // url: /apps/this-is-my-app
 
-var appId = FlowRouter.getParam("appId");
+var appId = FineRouter.getParam("appId");
 console.log(appId); // prints "this-is-my-app"
 ~~~
 
-#### FlowRouter.getQueryParam(queryStringKey);
+#### FineRouter.getQueryParam(queryStringKey);
 
 Reactive function which you can use to get a value from the queryString.
 
@@ -331,11 +331,11 @@ Reactive function which you can use to get a value from the queryString.
 // route def: /apps/:appId
 // url: /apps/this-is-my-app?show=yes&color=red
 
-var color = FlowRouter.getQueryParam("color");
+var color = FineRouter.getQueryParam("color");
 console.log(color); // prints "red"
 ~~~
 
-#### FlowRouter.path(pathDef, params, queryParams)
+#### FineRouter.path(pathDef, params, queryParams)
 
 Generate a path from a path definition. Both `params` and `queryParams` are optional.
 
@@ -346,7 +346,7 @@ var pathDef = "/blog/:cat/:id";
 var params = {cat: "met eor", id: "abc"};
 var queryParams = {show: "y+e=s", color: "black"};
 
-var path = FlowRouter.path(pathDef, params, queryParams);
+var path = FineRouter.path(pathDef, params, queryParams);
 console.log(path); // prints "/blog/met%20eor/abc?show=y%2Be%3Ds&color=black"
 ~~~
 
@@ -354,10 +354,10 @@ If there are no params or queryParams, this will simply return the pathDef as it
 
 ##### Using Route name instead of the pathDef
 
-You can also use the route's name instead of the pathDef. Then, FlowRouter will pick the pathDef from the given route. See the following example:
+You can also use the route's name instead of the pathDef. Then, FineRouter will pick the pathDef from the given route. See the following example:
 
 ~~~js
-FlowRouter.route("/blog/:cat/:id", {
+FineRouter.route("/blog/:cat/:id", {
     name: "blogPostRoute",
     action: function(params) {
         //...
@@ -367,26 +367,26 @@ FlowRouter.route("/blog/:cat/:id", {
 var params = {cat: "meteor", id: "abc"};
 var queryParams = {show: "yes", color: "black"};
 
-var path = FlowRouter.path("blogPostRoute", params, queryParams);
+var path = FineRouter.path("blogPostRoute", params, queryParams);
 console.log(path); // prints "/blog/meteor/abc?show=yes&color=black"
 ~~~
 
-#### FlowRouter.go(pathDef, params, queryParams);
+#### FineRouter.go(pathDef, params, queryParams);
 
-This will get the path via `FlowRouter.path` based on the arguments and re-route to that path.
+This will get the path via `FineRouter.path` based on the arguments and re-route to that path.
 
-You can call `FlowRouter.go` like this as well:
+You can call `FineRouter.go` like this as well:
 
 ~~~js
-FlowRouter.go("/blog");
+FineRouter.go("/blog");
 ~~~
 
 
-#### FlowRouter.url(pathDef, params, queryParams)
+#### FineRouter.url(pathDef, params, queryParams)
 
-Just like `FlowRouter.path`, but gives the absolute url. (Uses `Meteor.absoluteUrl` behind the scenes.)
+Just like `FineRouter.path`, but gives the absolute url. (Uses `Meteor.absoluteUrl` behind the scenes.)
 
-#### FlowRouter.setParams(newParams)
+#### FineRouter.setParams(newParams)
 
 This will change the current params with the newParams and re-route to the new path.
 
@@ -394,36 +394,36 @@ This will change the current params with the newParams and re-route to the new p
 // route def: /apps/:appId
 // url: /apps/this-is-my-app?show=yes&color=red
 
-FlowRouter.setParams({appId: "new-id"});
+FineRouter.setParams({appId: "new-id"});
 // Then the user will be redirected to the following path
 //      /apps/new-id?show=yes&color=red
 ~~~
 
-#### FlowRouter.setQueryParams(newQueryParams)
+#### FineRouter.setQueryParams(newQueryParams)
 
-Just like `FlowRouter.setParams`, but for queryString params.
+Just like `FineRouter.setParams`, but for queryString params.
 
 To remove a query param set it to `null` like below:
 
 ~~~js
-FlowRouter.setQueryParams({paramToRemove: null});
+FineRouter.setQueryParams({paramToRemove: null});
 ~~~
 
-#### FlowRouter.getRouteName()
+#### FineRouter.getRouteName()
 
 To get the name of the route reactively.
 
 ~~~js
 Tracker.autorun(function() {
-  var routeName = FlowRouter.getRouteName();
+  var routeName = FineRouter.getRouteName();
   console.log("Current route name is: ", routeName);
 });
 ~~~
 
-#### FlowRouter.current()
+#### FineRouter.current()
 
 Get the current state of the router. **This API is not reactive**.
-If you need to watch the changes in the path simply use `FlowRouter.watchPathChange()`.
+If you need to watch the changes in the path simply use `FineRouter.watchPathChange()`.
 
 This gives an object like this:
 
@@ -431,7 +431,7 @@ This gives an object like this:
 // route def: /apps/:appId
 // url: /apps/this-is-my-app?show=yes&color=red
 
-var current = FlowRouter.current();
+var current = FineRouter.current();
 console.log(current);
 
 // prints following object
@@ -443,26 +443,26 @@ console.log(current);
 // }
 ~~~
 
-#### FlowRouter.watchPathChange()
+#### FineRouter.watchPathChange()
 
-Reactively watch the changes in the path. If you need to simply get the params or queryParams use dedicated APIs like `FlowRouter.getQueryParam()`.
+Reactively watch the changes in the path. If you need to simply get the params or queryParams use dedicated APIs like `FineRouter.getQueryParam()`.
 
 ~~~js
 Tracker.autorun(function() {
-  FlowRouter.watchPathChange();
-  var currentContext = FlowRouter.current();
+  FineRouter.watchPathChange();
+  var currentContext = FineRouter.current();
   // do anything with the current context
   // or anything you wish
 });
 ~~~
 
-#### FlowRouter.withReplaceState(fn)
-Normally, all the route changes made via APIs like `FlowRouter.go` and `FlowRouter.setParams()` add a URL item to the browser history. For example, run the following code:
+#### FineRouter.withReplaceState(fn)
+Normally, all the route changes made via APIs like `FineRouter.go` and `FineRouter.setParams()` add a URL item to the browser history. For example, run the following code:
 
 ~~~js
-FlowRouter.setParams({id: "the-id-1"});
-FlowRouter.setParams({id: "the-id-2"});
-FlowRouter.setParams({id: "the-id-3"});
+FineRouter.setParams({id: "the-id-1"});
+FineRouter.setParams({id: "the-id-2"});
+FineRouter.setParams({id: "the-id-3"});
 ~~~
 
 Now you can hit the back button of your browser two times. This is normal behavior since users may click the back button and expect to see the previous state of the app.
@@ -470,47 +470,47 @@ Now you can hit the back button of your browser two times. This is normal behavi
 But sometimes, this is not something you want. You don't need to pollute the browser history. Then, you can use the following syntax.
 
 ~~~js
-FlowRouter.withReplaceState(function() {
-  FlowRouter.setParams({id: "the-id-1"});
-  FlowRouter.setParams({id: "the-id-2"});
-  FlowRouter.setParams({id: "the-id-3"});
+FineRouter.withReplaceState(function() {
+  FineRouter.setParams({id: "the-id-1"});
+  FineRouter.setParams({id: "the-id-2"});
+  FineRouter.setParams({id: "the-id-3"});
 });
 ~~~
 
-Now, there is no item in the browser history. Just like `FlowRouter.setParams`, you can use any FlowRouter API inside `FlowRouter.withReplaceState`.
+Now, there is no item in the browser history. Just like `FineRouter.setParams`, you can use any FineRouter API inside `FineRouter.withReplaceState`.
 
 > We named this function as `withReplaceState` because, replaceState is the underline API used for this functionality. Read more about [replace state & the history API](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
 
-#### FlowRouter.reload()
+#### FineRouter.reload()
 
-FlowRouter routes are idempotent. That means, even if you call `FlowRouter.go()` to the same URL multiple times, it only activates in the first run. This is also true for directly clicking on paths.
+FineRouter routes are idempotent. That means, even if you call `FineRouter.go()` to the same URL multiple times, it only activates in the first run. This is also true for directly clicking on paths.
 
 So, if you really need to reload the route, this is the API you want.
 
-#### FlowRouter.wait() and FlowRouter.initialize()
+#### FineRouter.wait() and FineRouter.initialize()
 
-By default, FlowRouter initializes the routing process in a `Meteor.startup()` callback. This works for most of the apps. But, some apps have custom initializations and FlowRouter needs to initialize after that.
+By default, FineRouter initializes the routing process in a `Meteor.startup()` callback. This works for most of the apps. But, some apps have custom initializations and FineRouter needs to initialize after that.
 
-So, that's where `FlowRouter.wait()` comes to save you. You need to call it directly inside your JavaScript file. After that, whenever your app is ready call `FlowRouter.initialize()`.
+So, that's where `FineRouter.wait()` comes to save you. You need to call it directly inside your JavaScript file. After that, whenever your app is ready call `FineRouter.initialize()`.
 
 eg:-
 
 ~~~js
 // file: app.js
-FlowRouter.wait();
+FineRouter.wait();
 WhenEverYourAppIsReady(function() {
-  FlowRouter.initialize();
+  FineRouter.initialize();
 });
 ~~~
 
 For more information visit [issue #180](https://github.com/meteorhacks/flow-router/issues/180).
 
-#### FlowRouter.onRouteRegister(cb)
+#### FineRouter.onRouteRegister(cb)
 
-This API is specially designed for add-on developers. They can listen for any registered route and add custom functionality to FlowRouter. This works on both server and client alike.
+This API is specially designed for add-on developers. They can listen for any registered route and add custom functionality to FineRouter. This works on both server and client alike.
 
 ~~~js
-FlowRouter.onRouteRegister(function(route) {
+FineRouter.onRouteRegister(function(route) {
   // do anything with the route object
   console.log(route);
 });
@@ -519,7 +519,7 @@ FlowRouter.onRouteRegister(function(route) {
 Let's say a user defined a route like this:
 
 ~~~js
-FlowRouter.route('/blog/:post', {
+FineRouter.route('/blog/:post', {
   name: 'postList',
   triggersEnter: [function() {}],
   subscriptions: function() {},
@@ -545,12 +545,12 @@ So, it's not the internal route object we are using.
 
 For Subscription Management, we highly suggest you to follow [Template/Component level subscriptions](https://kadira.io/academy/meteor-routing-guide/content/subscriptions-and-data-management). Visit this [guide](https://kadira.io/academy/meteor-routing-guide/content/subscriptions-and-data-management) for that.
 
-FlowRouter also has it's own subscription registration mechanism. We will remove this in version 3.0. We don't remove or deprecate it in version 2.x because this is the easiest way to implement FastRender support for your app. In 3.0 we've better support for FastRender with Server Side Rendering.
+FineRouter also has it's own subscription registration mechanism. We will remove this in version 3.0. We don't remove or deprecate it in version 2.x because this is the easiest way to implement FastRender support for your app. In 3.0 we've better support for FastRender with Server Side Rendering.
 
-FlowRouter only deals with registration of subscriptions. It does not wait until subscription becomes ready. This is how to register a subscription.
+FineRouter only deals with registration of subscriptions. It does not wait until subscription becomes ready. This is how to register a subscription.
 
 ~~~js
-FlowRouter.route('/blog/:postId', {
+FineRouter.route('/blog/:postId', {
     subscriptions: function(params, queryParams) {
         this.register('myPost', Meteor.subscribe('blogPost', params.postId));
     }
@@ -560,7 +560,7 @@ FlowRouter.route('/blog/:postId', {
 We can also register global subscriptions like this:
 
 ~~~js
-FlowRouter.subscriptions = function() {
+FineRouter.subscriptions = function() {
   this.register('myCourses', Meteor.subscribe('courses'));
 };
 ~~~
@@ -571,35 +571,35 @@ After you've registered your subscriptions, you can reactively check for the sta
 
 ~~~js
 Tracker.autorun(function() {
-    console.log("Is myPost ready?:", FlowRouter.subsReady("myPost"));
-    console.log("Are all subscriptions ready?:", FlowRouter.subsReady());
+    console.log("Is myPost ready?:", FineRouter.subsReady("myPost"));
+    console.log("Are all subscriptions ready?:", FineRouter.subsReady());
 });
 ~~~
 
-So, you can use `FlowRouter.subsReady` inside template helpers to show the loading status and act accordingly.
+So, you can use `FineRouter.subsReady` inside template helpers to show the loading status and act accordingly.
 
-### FlowRouter.subsReady() with a callback
+### FineRouter.subsReady() with a callback
 
-Sometimes, we need to use `FlowRouter.subsReady()` in places where an autorun is not available. One such example is inside an event handler. For such places, we can use the callback API of `FlowRouter.subsReady()`.
+Sometimes, we need to use `FineRouter.subsReady()` in places where an autorun is not available. One such example is inside an event handler. For such places, we can use the callback API of `FineRouter.subsReady()`.
 
 ~~~js
 Template.myTemplate.events({
    "click #id": function(){
-      FlowRouter.subsReady("myPost", function() {
+      FineRouter.subsReady("myPost", function() {
          // do something
       });
   }
 });
 ~~~
 
-> Arunoda has discussed more about Subscription Management in FlowRouter in [this](https://meteorhacks.com/flow-router-and-subscription-management.html#subscription-management) blog post about [FlowRouter and Subscription Management](https://meteorhacks.com/flow-router-and-subscription-management.html).
+> Arunoda has discussed more about Subscription Management in FineRouter in [this](https://meteorhacks.com/flow-router-and-subscription-management.html#subscription-management) blog post about [FineRouter and Subscription Management](https://meteorhacks.com/flow-router-and-subscription-management.html).
 
 > He's showing how to build an app like this:
 
->![FlowRouter's Subscription Management](https://cldup.com/esLzM8cjEL.gif)
+>![FineRouter's Subscription Management](https://cldup.com/esLzM8cjEL.gif)
 
 #### Fast Render
-FlowRouter has built in support for [Fast Render](https://github.com/meteorhacks/fast-render).
+FineRouter has built in support for [Fast Render](https://github.com/meteorhacks/fast-render).
 
 - `meteor add meteorhacks:fast-render`
 - Put `router.js` in a shared location. We suggest `lib/router.js`.
@@ -607,7 +607,7 @@ FlowRouter has built in support for [Fast Render](https://github.com/meteorhacks
 You can exclude Fast Render support by wrapping the subscription registration in an `isClient` block:
 
 ~~~js
-FlowRouter.route('/blog/:postId', {
+FineRouter.route('/blog/:postId', {
     subscriptions: function(params, queryParams) {
         // using Fast Render
         this.register('myPost', Meteor.subscribe('blogPost', params.postId));
@@ -626,7 +626,7 @@ You can also use [Subs Manager](https://github.com/meteorhacks/subs-manager) for
 
 ## IE9 Support
 
-FlowRouter has IE9 support. But it does not ship the **HTML5 history polyfill** out of the box. That's because most apps do not require it.
+FineRouter has IE9 support. But it does not ship the **HTML5 history polyfill** out of the box. That's because most apps do not require it.
 
 If you need to support IE9, add the **HTML5 history polyfill** with the following package.
 
@@ -640,21 +640,21 @@ To enable hashbang urls like `mydomain.com/#!/mypath` simple set the `hashbang` 
 
 ~~~js
 // file: app.js
-FlowRouter.wait();
+FineRouter.wait();
 WhenEverYourAppIsReady(function() {
-  FlowRouter.initialize({hashbang: true});
+  FineRouter.initialize({hashbang: true});
 });
 ~~~
 
 ## Prefixed paths
 
-In cases you wish to run multiple web application on the same domain name, you’ll probably want to serve your particular meteor application under a sub-path (eg `example.com/myapp`). In this case simply include the path prefix in the meteor `ROOT_URL` environment variable and FlowRouter will handle it transparently without any additional configuration.
+In cases you wish to run multiple web application on the same domain name, you’ll probably want to serve your particular meteor application under a sub-path (eg `example.com/myapp`). In this case simply include the path prefix in the meteor `ROOT_URL` environment variable and FineRouter will handle it transparently without any additional configuration.
 
 ## Add-ons
 
-Router is a base package for an app. Other projects like [useraccounts](http://useraccounts.meteor.com/)  should have support for FlowRouter. Otherwise, it's hard to use  FlowRouter in a real project. Now a lot of packages have [started to support FlowRouter](https://kadira.io/blog/meteor/addon-packages-for-flowrouter).
+Router is a base package for an app. Other projects like [useraccounts](http://useraccounts.meteor.com/)  should have support for FineRouter. Otherwise, it's hard to use  FineRouter in a real project. Now a lot of packages have [started to support FineRouter](https://kadira.io/blog/meteor/addon-packages-for-flowrouter).
 
-So, you can use your your favorite package with FlowRouter as well. If not, there is an [easy process](https://kadira.io/blog/meteor/addon-packages-for-flowrouter#what-if-project-xxx-still-doesn-t-support-flowrouter-) to convert them to FlowRouter.
+So, you can use your your favorite package with FineRouter as well. If not, there is an [easy process](https://kadira.io/blog/meteor/addon-packages-for-flowrouter#what-if-project-xxx-still-doesn-t-support-flowrouter-) to convert them to FineRouter.
 
 **Add-on API**
 
@@ -664,23 +664,23 @@ If you've more ideas for the add-on API, [let us know](https://github.com/kadira
 
 ## Difference with Iron Router
 
-FlowRouter and Iron Router are two different routers. Iron Router tries to be a full featured solution. It tries to do everything including routing, subscriptions, rendering and layout management.
+FineRouter and Iron Router are two different routers. Iron Router tries to be a full featured solution. It tries to do everything including routing, subscriptions, rendering and layout management.
 
-FlowRouter is a minimalistic solution focused on routing with UI performance in mind. It exposes APIs for related functionality.
+FineRouter is a minimalistic solution focused on routing with UI performance in mind. It exposes APIs for related functionality.
 
 Let's learn more about the differences:
 
 ### Rendering
 
-FlowRouter doesn't handle rendering. By decoupling rendering from the router it's possible to use any rendering framework, such as [Blaze Layout](https://github.com/kadirahq/blaze-layout) to render with Blaze's Dynamic Templates. Rendering calls are made in the the route's action. We have a layout manager for [React](https://github.com/kadirahq/meteor-react-layout) as well.
+FineRouter doesn't handle rendering. By decoupling rendering from the router it's possible to use any rendering framework, such as [Blaze Layout](https://github.com/kadirahq/blaze-layout) to render with Blaze's Dynamic Templates. Rendering calls are made in the the route's action. We have a layout manager for [React](https://github.com/kadirahq/meteor-react-layout) as well.
 
 ### Subscriptions
 
-With FlowRouter, we highly suggest using template/component layer subscriptions. But, if you need to do routing in the router layer, FlowRouter has [subscription registration](#subscription-management) mechanism. Even with that, FlowRouter never waits for the subscriptions and view layer to do it.
+With FineRouter, we highly suggest using template/component layer subscriptions. But, if you need to do routing in the router layer, FineRouter has [subscription registration](#subscription-management) mechanism. Even with that, FineRouter never waits for the subscriptions and view layer to do it.
 
 ### Reactive Content
 
-In Iron Router you can use reactive content inside the router, but any hook or method can re-run in an unpredictable manner. FlowRouter limits reactive data sources to a single run; when it is first called.
+In Iron Router you can use reactive content inside the router, but any hook or method can re-run in an unpredictable manner. FineRouter limits reactive data sources to a single run; when it is first called.
 
 We think that's the way to go. Router is just a user action. We can work with reactive content in the rendering layer.
 
@@ -707,12 +707,12 @@ Let's say we changed `:section` in the route. Then the above helper also gets re
 
 Because of this, a lot parts of our app get re-run and re-rendered. This creates unpredictable rendering behavior in our app.
 
-FlowRouter fixes this issue by providing the `Router.getParam()` API. See how to use it:
+FineRouter fixes this issue by providing the `Router.getParam()` API. See how to use it:
 
 ~~~js
 Templates['foo'].helpers({
     "someData": function() {
-        var appId = FlowRouter.getParam('appId');
+        var appId = FineRouter.getParam('appId');
         return doSomething(appId);
     }
 });
@@ -720,17 +720,17 @@ Templates['foo'].helpers({
 
 ### No data context
 
-FlowRouter does not have a data context. Data context has the same problem as reactive `.current()`. We believe, it'll possible to get data directly in the template (component) layer.
+FineRouter does not have a data context. Data context has the same problem as reactive `.current()`. We believe, it'll possible to get data directly in the template (component) layer.
 
 ### Built in Fast Render Support
 
-FlowRouter has built in [Fast Render](https://github.com/meteorhacks/fast-render) support. Just add Fast Render to your app and it'll work. Nothing to change in the router.
+FineRouter has built in [Fast Render](https://github.com/meteorhacks/fast-render) support. Just add Fast Render to your app and it'll work. Nothing to change in the router.
 
 For more information check [docs](#fast-render).
 
 ### Server Side Routing
 
-FlowRouter is a client side router and it **does not** support server side routing at all. But `subscriptions` run on the server to enable Fast Render support.
+FineRouter is a client side router and it **does not** support server side routing at all. But `subscriptions` run on the server to enable Fast Render support.
 
 #### Reason behind that
 
@@ -746,7 +746,7 @@ So, it's better to use a dedicated server-side router like [`meteorhacks:picker`
 
 ### Server Side Rendering
 
-FlowRouter 3.0 will have server side rendering support. We've already started the initial version and check our [`ssr`](https://github.com/meteorhacks/flow-router/tree/ssr) branch for that.
+FineRouter 3.0 will have server side rendering support. We've already started the initial version and check our [`ssr`](https://github.com/meteorhacks/flow-router/tree/ssr) branch for that.
 
 It's currently very usable and Kadira already using it for <https://kadira.io>
 
@@ -760,8 +760,8 @@ Migrating into version 2.0 is easy and you don't need to change any application 
 
 Here are the steps to migrate your app into 2.0.
 
-#### Use the New FlowRouter Package
-* Now FlowRouter comes as `kadira:flow-router`
+#### Use the New FineRouter Package
+* Now FineRouter comes as `kadira:flow-router`
 * So, remove `meteorhacks:flow-router` with : `meteor remove meteorhacks:flow-router`
 * Then, add `kadira:flow-router` with `meteor add kadira:flow-router`
 

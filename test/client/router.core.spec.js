@@ -1,16 +1,16 @@
-Router = FlowRouter.Router;
+Router = FineRouter.Router;
 
 Tinytest.addAsync('Client - Router - define and go to route', function (test, next) {
   var rand = Random.id();
   var rendered = 0;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       rendered++;
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
     test.equal(rendered, 1);
@@ -24,14 +24,14 @@ function (test, next) {
   var pathDef = "/" + rand + "/:key";
   var rendered = 0;
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params) {
       test.equal(params.key, "abc +@%");
       rendered++;
     }
   });
 
-  FlowRouter.go(pathDef, {key: "abc +@%"});
+  FineRouter.go(pathDef, {key: "abc +@%"});
 
   setTimeout(function() {
     test.equal(rendered, 1);
@@ -44,14 +44,14 @@ Tinytest.addAsync('Client - Router - parse params and query', function (test, ne
   var rendered = 0;
   var params = null;
 
-  FlowRouter.route('/' + rand + '/:foo', {
+  FineRouter.route('/' + rand + '/:foo', {
     action: function(_params) {
       rendered++;
       params = _params;
     }
   });
 
-  FlowRouter.go('/' + rand + '/bar');
+  FineRouter.go('/' + rand + '/bar');
 
   setTimeout(function() {
     test.equal(rendered, 1);
@@ -60,26 +60,26 @@ Tinytest.addAsync('Client - Router - parse params and query', function (test, ne
   }, 100);
 });
 
-Tinytest.addAsync('Client - Router - redirect using FlowRouter.go', function (test, next) {
+Tinytest.addAsync('Client - Router - redirect using FineRouter.go', function (test, next) {
   var rand = Random.id(), rand2 = Random.id();
   var log = [];
   var paths = ['/' + rand2, '/' + rand];
   var done = false;
 
-  FlowRouter.route(paths[0], {
+  FineRouter.route(paths[0], {
     action: function(_params) {
       log.push(1);
-      FlowRouter.go(paths[1]);
+      FineRouter.go(paths[1]);
     }
   });
 
-  FlowRouter.route(paths[1], {
+  FineRouter.route(paths[1], {
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.go(paths[0]);
+  FineRouter.go(paths[0]);
 
   setTimeout(function() {
     test.equal(log, [1, 2]);
@@ -96,34 +96,34 @@ Tinytest.addAsync('Client - Router - get current route path', function (test, ne
 
   var detectedValue = null;
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params) {
       detectedValue = params._id;
     }
   });
 
-  FlowRouter.go(path);
+  FineRouter.go(path);
 
   Meteor.setTimeout(function() {
     test.equal(detectedValue, value);
-    test.equal(FlowRouter.current().path, path);
+    test.equal(FineRouter.current().path, path);
     next();
   }, 50);
 });
 
 Tinytest.addAsync('Client - Router - subscribe to global subs', function (test, next) {
   var rand = Random.id();
-  FlowRouter.route('/' + rand);
+  FineRouter.route('/' + rand);
 
-  FlowRouter.subscriptions = function (path) {
+  FineRouter.subscriptions = function (path) {
     test.equal(path, '/' + rand);
     this.register('baz', Meteor.subscribe('baz'));
   };
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
   setTimeout(function() {
     test.isTrue(!!GetSub('baz'));
-    FlowRouter.subscriptions = Function.prototype;
+    FineRouter.subscriptions = Function.prototype;
     next();
   }, 100);
 });
@@ -132,16 +132,16 @@ Tinytest.addAsync('Client - Router - setParams - generic', function (test, done)
   var randomKey = Random.id();
   var pathDef = "/" + randomKey + "/:cat/:id";
   var paramsList = [];
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params) {
       paramsList.push(params);
     }
   });
 
-  FlowRouter.go(pathDef, {cat: "meteor", id: "200"});
+  FineRouter.go(pathDef, {cat: "meteor", id: "200"});
   setTimeout(function() {
     // return done();
-    var success = FlowRouter.setParams({id: "700"});
+    var success = FineRouter.setParams({id: "700"});
     test.isTrue(success);
     setTimeout(validate, 50);
   }, 50);
@@ -160,17 +160,17 @@ Tinytest.addAsync('Client - Router - setParams - preserve query strings', functi
   var paramsList = [];
   var queryParamsList = [];
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params, queryParams) {
       paramsList.push(params);
       queryParamsList.push(queryParams);
     }
   });
 
-  FlowRouter.go(pathDef, {cat: "meteor", id: "200 +% / ad"}, {aa: "20 +%"});
+  FineRouter.go(pathDef, {cat: "meteor", id: "200 +% / ad"}, {aa: "20 +%"});
   setTimeout(function() {
     // return done();
-    var success = FlowRouter.setParams({id: "700 +% / ad"});
+    var success = FineRouter.setParams({id: "700 +% / ad"});
     test.isTrue(success);
     setTimeout(validate, 50);
   }, 50);
@@ -187,26 +187,26 @@ Tinytest.addAsync('Client - Router - setParams - preserve query strings', functi
 });
 
 Tinytest.add('Client - Router - setParams - no route selected', function (test) {
-  var originalRoute = FlowRouter._current.route;
-  FlowRouter._current.route = undefined;
-  var success = FlowRouter.setParams({id: "800"});
+  var originalRoute = FineRouter._current.route;
+  FineRouter._current.route = undefined;
+  var success = FineRouter.setParams({id: "800"});
   test.isFalse(success);
-  FlowRouter._current.route = originalRoute;
+  FineRouter._current.route = originalRoute;
 });
 
 Tinytest.addAsync('Client - Router - setQueryParams - using check', function (test, done) {
   var randomKey = Random.id();
   var pathDef = "/" + randomKey + "";
   var queryParamsList = [];
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params, queryParams) {
       queryParamsList.push(queryParams);
     }
   });
 
-  FlowRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
+  FineRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
   setTimeout(function() {
-    check(FlowRouter.current().queryParams, {cat: String, id: String});
+    check(FineRouter.current().queryParams, {cat: String, id: String});
     done();
   }, 50);
 });
@@ -215,16 +215,16 @@ Tinytest.addAsync('Client - Router - setQueryParams - generic', function (test, 
   var randomKey = Random.id();
   var pathDef = "/" + randomKey + "";
   var queryParamsList = [];
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params, queryParams) {
       queryParamsList.push(queryParams);
     }
   });
 
-  FlowRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
+  FineRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
   setTimeout(function() {
     // return done();
-    var success = FlowRouter.setQueryParams({id: "700"});
+    var success = FineRouter.setQueryParams({id: "700"});
     test.isTrue(success);
     setTimeout(validate, 50);
   }, 50);
@@ -241,15 +241,15 @@ Tinytest.addAsync('Client - Router - setQueryParams - remove query param null', 
   var randomKey = Random.id();
   var pathDef = "/" + randomKey + "";
   var queryParamsList = [];
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params, queryParams) {
       queryParamsList.push(queryParams);
     }
   });
 
-  FlowRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
+  FineRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
   setTimeout(function() {
-    var success = FlowRouter.setQueryParams({id: "700", cat: null});
+    var success = FineRouter.setQueryParams({id: "700", cat: null});
     test.isTrue(success);
     setTimeout(validate, 50);
   }, 50);
@@ -266,15 +266,15 @@ Tinytest.addAsync('Client - Router - setQueryParams - remove query param undefin
   var randomKey = Random.id();
   var pathDef = "/" + randomKey + "";
   var queryParamsList = [];
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params, queryParams) {
       queryParamsList.push(queryParams);
     }
   });
 
-  FlowRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
+  FineRouter.go(pathDef, {}, {cat: "meteor", id: "200"});
   setTimeout(function() {
-    var success = FlowRouter.setQueryParams({id: "700", cat: undefined});
+    var success = FineRouter.setQueryParams({id: "700", cat: undefined});
     test.isTrue(success);
     setTimeout(validate, 50);
   }, 50);
@@ -292,17 +292,17 @@ Tinytest.addAsync('Client - Router - setQueryParams - preserve params', function
   var pathDef = "/" + randomKey + "/:abc";
   var queryParamsList = [];
   var paramsList = [];
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params, queryParams) {
       paramsList.push(params);
       queryParamsList.push(queryParams);
     }
   });
 
-  FlowRouter.go(pathDef, {abc: "20"}, {cat: "meteor", id: "200"});
+  FineRouter.go(pathDef, {abc: "20"}, {cat: "meteor", id: "200"});
   setTimeout(function() {
     // return done();
-    var success = FlowRouter.setQueryParams({id: "700"});
+    var success = FineRouter.setQueryParams({id: "700"});
     test.isTrue(success);
     setTimeout(validate, 50);
   }, 50);
@@ -321,16 +321,16 @@ Tinytest.addAsync('Client - Router - setQueryParams - preserve params', function
 });
 
 Tinytest.add('Client - Router - setQueryParams - no route selected', function (test) {
-  var originalRoute = FlowRouter._current.route;
-  FlowRouter._current.route = undefined;
-  var success = FlowRouter.setQueryParams({id: "800"});
+  var originalRoute = FineRouter._current.route;
+  FineRouter._current.route = undefined;
+  var success = FineRouter.setQueryParams({id: "800"});
   test.isFalse(success);
-  FlowRouter._current.route = originalRoute;
+  FineRouter._current.route = originalRoute;
 });
 
 Tinytest.addAsync('Client - Router - notFound', function (test, done) {
   var data = [];
-  FlowRouter.notFound = {
+  FineRouter.notFound = {
     subscriptions: function() {
       data.push("subscriptions");
     },
@@ -339,7 +339,7 @@ Tinytest.addAsync('Client - Router - notFound', function (test, done) {
     }
   };
 
-  FlowRouter.go("/" + Random.id());
+  FineRouter.go("/" + Random.id());
   setTimeout(function() {
     test.equal(data, ["subscriptions", "action"]);
     done();
@@ -349,19 +349,19 @@ Tinytest.addAsync('Client - Router - notFound', function (test, done) {
 Tinytest.addAsync('Client - Router - withReplaceState - enabled',
 function (test, done) {
   var pathDef = "/" + Random.id() + "/:id";
-  var originalRedirect = FlowRouter._page.replace;
+  var originalRedirect = FineRouter._page.replace;
   var callCount = 0;
-  FlowRouter._page.replace = function(path) {
+  FineRouter._page.replace = function(path) {
     callCount++;
-    originalRedirect.call(FlowRouter._page, path);
+    originalRedirect.call(FineRouter._page, path);
   };
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     name: name,
     action: function(params) {
       test.equal(params.id, "awesome");
       test.equal(callCount, 1);
-      FlowRouter._page.replace = originalRedirect;
+      FineRouter._page.replace = originalRedirect;
       // We don't use Meteor.defer here since it carries
       // Meteor.Environment vars too
       // Which breaks our test below
@@ -369,46 +369,46 @@ function (test, done) {
     }
   });
 
-  FlowRouter.withReplaceState(function() {
-    FlowRouter.go(pathDef, {id: "awesome"});
+  FineRouter.withReplaceState(function() {
+    FineRouter.go(pathDef, {id: "awesome"});
   });
 });
 
 Tinytest.addAsync('Client - Router - withReplaceState - disabled',
 function (test, done) {
   var pathDef = "/" + Random.id() + "/:id";
-  var originalRedirect = FlowRouter._page.replace;
+  var originalRedirect = FineRouter._page.replace;
   var callCount = 0;
-  FlowRouter._page.replace = function(path) {
+  FineRouter._page.replace = function(path) {
     callCount++;
-    originalRedirect.call(FlowRouter._page, path);
+    originalRedirect.call(FineRouter._page, path);
   };
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     name: name,
     action: function(params) {
       test.equal(params.id, "awesome");
       test.equal(callCount, 0);
-      FlowRouter._page.replace = originalRedirect;
+      FineRouter._page.replace = originalRedirect;
       Meteor.defer(done);
     }
   });
 
-  FlowRouter.go(pathDef, {id: "awesome"});
+  FineRouter.go(pathDef, {id: "awesome"});
 });
 
 Tinytest.addAsync('Client - Router - withTrailingSlash - enabled', function (test, next) {
   var rand = Random.id();
   var rendered = 0;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       rendered++;
     }
   });
 
-  FlowRouter.withTrailingSlash(function() {
-    FlowRouter.go('/' + rand);
+  FineRouter.withTrailingSlash(function() {
+    FineRouter.go('/' + rand);
   });
 
   setTimeout(function() {
@@ -424,16 +424,16 @@ function (test, done) {
   var pathDef = "/" + rand;
   var rendered = 0;
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params) {
       rendered++;
     }
   });
 
-  FlowRouter.go(pathDef);
+  FineRouter.go(pathDef);
 
   Meteor.defer(function() {
-    FlowRouter.go(pathDef);
+    FineRouter.go(pathDef);
 
     Meteor.defer(function() {
       test.equal(rendered, 1);
@@ -455,19 +455,19 @@ function (test, next) {
     runnedTriggers++;
   }];
 
-  FlowRouter.triggers.enter(triggerFns);
+  FineRouter.triggers.enter(triggerFns);
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     triggersEnter: triggerFns,
     triggersExit: triggerFns
   });
 
-  FlowRouter.go(pathDef);
+  FineRouter.go(pathDef);
 
-  FlowRouter.triggers.exit(triggerFns);
+  FineRouter.triggers.exit(triggerFns);
 
   Meteor.defer(function() {
-    FlowRouter.go(pathDef);
+    FineRouter.go(pathDef);
 
     Meteor.defer(function() {
       test.equal(runnedTriggers, 2);
@@ -483,16 +483,16 @@ function (test, done) {
   var pathDef = "/" + rand;
   var rendered = 0;
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     action: function(params) {
       rendered++;
     }
   });
 
-  FlowRouter.go(pathDef);
+  FineRouter.go(pathDef);
 
   Meteor.defer(function() {
-    FlowRouter.reload();
+    FineRouter.reload();
 
     Meteor.defer(function() {
       test.equal(rendered, 2);
@@ -514,19 +514,19 @@ function (test, next) {
     runnedTriggers++;
   }];
 
-  FlowRouter.triggers.enter(triggerFns);
+  FineRouter.triggers.enter(triggerFns);
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     triggersEnter: triggerFns,
     triggersExit: triggerFns
   });
 
-  FlowRouter.go(pathDef);
+  FineRouter.go(pathDef);
 
-  FlowRouter.triggers.exit(triggerFns);
+  FineRouter.triggers.exit(triggerFns);
 
   Meteor.defer(function() {
-    FlowRouter.reload();
+    FineRouter.reload();
 
     Meteor.defer(function() {
       test.equal(runnedTriggers, 6);
@@ -539,12 +539,12 @@ function (test, next) {
 Tinytest.addAsync(
 'Client - Router - wait - before initialize',
 function(test, done) {
-  FlowRouter._initialized = false;
-  FlowRouter.wait();
-  test.equal(FlowRouter._askedToWait, true);
+  FineRouter._initialized = false;
+  FineRouter.wait();
+  test.equal(FineRouter._askedToWait, true);
 
-  FlowRouter._initialized = true;
-  FlowRouter._askedToWait = false;
+  FineRouter._initialized = true;
+  FineRouter._askedToWait = false;
   done();
 });
 
@@ -552,7 +552,7 @@ Tinytest.addAsync(
 'Client - Router - wait - after initialized',
 function(test, done) {
   try {
-    FlowRouter.wait();
+    FineRouter.wait();
   } catch(ex) {
     test.isTrue(/can't wait/.test(ex.message));
     done();
@@ -563,7 +563,7 @@ Tinytest.addAsync(
 'Client - Router - initialize - after initialized',
 function(test, done) {
   try {
-    FlowRouter.initialize();
+    FineRouter.initialize();
   } catch(ex) {
     test.isTrue(/already initialized/.test(ex.message));
     done();
@@ -573,12 +573,12 @@ function(test, done) {
 Tinytest.addAsync(
 'Client - Router - base path - url updated',
 function(test, done) {
-  var simulatedBasePath = '/flow';
+  var simulatedBasePath = '/fine';
   var rand = Random.id();
-  FlowRouter.route('/' + rand, { action: function() {} });
+  FineRouter.route('/' + rand, { action: function() {} });
 
   setBasePath(simulatedBasePath);
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
   setTimeout(function() {
     test.equal(location.pathname, simulatedBasePath + '/' + rand);
     resetBasePath();
@@ -589,9 +589,9 @@ function(test, done) {
 Tinytest.addAsync(
 'Client - Router - base path - route action called',
 function(test, done) {
-  var simulatedBasePath = '/flow';
+  var simulatedBasePath = '/fine';
   var rand = Random.id();
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function() {
       resetBasePath();
       done();
@@ -599,28 +599,28 @@ function(test, done) {
   });
 
   setBasePath(simulatedBasePath);
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 });
 
 Tinytest.add(
 'Client - Router - base path - path generation',
 function(test, done) {
-  _.each(['/flow', '/flow/', 'flow/', 'flow'], function(simulatedBasePath) {
+  _.each(['/fine', '/fine/', 'fine/', 'fine'], function(simulatedBasePath) {
     var rand = Random.id();
     setBasePath(simulatedBasePath);
-    test.equal(FlowRouter.path('/' + rand), '/flow/' + rand);
+    test.equal(FineRouter.path('/' + rand), '/fine/' + rand);
   });
   resetBasePath();
 });
 
 
 function setBasePath(path) {
-  FlowRouter._initialized = false;
-  FlowRouter._basePath = path;
-  FlowRouter.initialize();
+  FineRouter._initialized = false;
+  FineRouter._basePath = path;
+  FineRouter.initialize();
 }
 
-var defaultBasePath = FlowRouter._basePath;
+var defaultBasePath = FineRouter._basePath;
 function resetBasePath() {
   setBasePath(defaultBasePath);
 }

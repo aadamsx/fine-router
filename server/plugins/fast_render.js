@@ -12,7 +12,7 @@ Meteor.startup(function () {
 });
 
 function setupFastRender () {
-  _.each(FlowRouter._routes, function (route) {
+  _.each(FineRouter._routes, function (route) {
     FastRender.route(route.pathDef, function (routeParams, path) {
       var self = this;
 
@@ -23,7 +23,7 @@ function setupFastRender () {
       };
 
       route._subsMap = {};
-      FlowRouter.subscriptions.call(route, path);
+      FineRouter.subscriptions.call(route, path);
       if(route.subscriptions) {
         var queryParams = routeParams.query;
         var params = _.omit(routeParams, 'query');

@@ -4,28 +4,28 @@ Tinytest.addAsync('Client - Triggers - global enter triggers', function(test, ne
   var paths = ['/' + rand2, '/' + rand];
   var done = false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.triggers.enter([function(context) {
+  FineRouter.triggers.enter([function(context) {
     if(done) return;
     test.equal(context.path, paths.pop());
     log.push(0);
   }]);
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [0, 1, 0, 2]);
@@ -40,29 +40,29 @@ Tinytest.addAsync('Client - Triggers - global enter triggers with "only"', funct
   var log = [];
   var done = false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     name: 'foo',
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.triggers.enter([function(context) {
+  FineRouter.triggers.enter([function(context) {
     if(done) return;
     test.equal(context.path, '/' + rand2);
     log.push(8);
   }], {only: ['foo']});
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [1, 8, 2]);
@@ -77,29 +77,29 @@ Tinytest.addAsync('Client - Triggers - global enter triggers with "except"', fun
   var log = [];
   var done = false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     name: 'foo',
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.triggers.enter([function(context) {
+  FineRouter.triggers.enter([function(context) {
     if(done) return;
     test.equal(context.path, '/' + rand);
     log.push(8);
   }], {except: ['foo']});
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [8, 1, 2]);
@@ -114,28 +114,28 @@ Tinytest.addAsync('Client - Triggers - global exit triggers', function (test, ne
   var log = [];
   var done =false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
-  FlowRouter.triggers.exit([function(context) {
+  FineRouter.triggers.exit([function(context) {
     if(done) return;
     test.equal(context.path, '/' + rand);
     log.push(0);
   }]);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [1, 0, 2]);
@@ -150,32 +150,32 @@ Tinytest.addAsync('Client - Triggers - global exit triggers with "only"', functi
   var log = [];
   var done = false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     name: 'foo',
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.triggers.exit([function(context) {
+  FineRouter.triggers.exit([function(context) {
     if(done) return;
     test.equal(context.path, '/' + rand2);
     log.push(8);
   }], {only: ['foo']});
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
-      FlowRouter.go('/' + rand);
+      FineRouter.go('/' + rand);
 
       setTimeout(function() {
         test.equal(log, [1, 2, 8, 1]);
@@ -191,22 +191,22 @@ Tinytest.addAsync('Client - Triggers - global exit triggers with "except"', func
   var log = [];
   var done = false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     name: 'foo',
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
-  FlowRouter.triggers.exit([function(context) {
+  FineRouter.triggers.exit([function(context) {
     if(done) return;
     test.equal(context.path, '/' + rand);
     log.push(9);
@@ -214,10 +214,10 @@ Tinytest.addAsync('Client - Triggers - global exit triggers with "except"', func
 
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
-      FlowRouter.go('/' + rand);
+      FineRouter.go('/' + rand);
 
       setTimeout(function() {
         test.equal(log, [1, 9, 2, 1]);
@@ -237,14 +237,14 @@ Tinytest.addAsync('Client - Triggers - route enter triggers', function (test, ne
     log.push(5);
   };
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     triggersEnter: [triggerFn],
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
     test.equal(log, [5, 1]);
@@ -261,17 +261,17 @@ Tinytest.addAsync('Client - Triggers - router exit triggers', function (test, ne
     log.push(6);
   };
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     triggersExit: [triggerFn],
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + Random.id());
+    FineRouter.go('/' + Random.id());
 
     setTimeout(function() {
       test.equal(log, [1, 6]);
@@ -290,7 +290,7 @@ Tinytest.addAsync('Client - Triggers - group enter triggers', function (test, ne
     log.push(3);
   };
 
-  var group = FlowRouter.group({
+  var group = FineRouter.group({
     triggersEnter: [triggerFn]
   });
 
@@ -306,10 +306,10 @@ Tinytest.addAsync('Client - Triggers - group enter triggers', function (test, ne
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [3, 1, 3, 2]);
@@ -326,7 +326,7 @@ Tinytest.addAsync('Client - Triggers - group exit triggers', function (test, nex
     log.push(4);
   };
 
-  var group = FlowRouter.group({
+  var group = FineRouter.group({
     triggersExit: [triggerFn]
   });
 
@@ -342,10 +342,10 @@ Tinytest.addAsync('Client - Triggers - group exit triggers', function (test, nex
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [1, 4, 2]);
@@ -358,7 +358,7 @@ Tinytest.addAsync('Client - Triggers - redirect from enter', function(test, next
   var rand = Random.id(), rand2 = Random.id();
   var log = [];
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     triggersEnter: [function(context, redirect) {
       redirect("/" + rand2);
     }, function() {
@@ -370,15 +370,15 @@ Tinytest.addAsync('Client - Triggers - redirect from enter', function(test, next
     name: rand
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     action: function(_params) {
       log.push(2);
     },
     name: rand2
   });
 
-  FlowRouter.go('/');
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/');
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
     test.equal(log, [2]);
@@ -390,7 +390,7 @@ Tinytest.addAsync('Client - Triggers - redirect by routeName', function(test, ne
   var rand = Random.id(), rand2 = Random.id();
   var log = [];
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     name: rand,
     triggersEnter: [function(context, redirect) {
       redirect(rand2, null, {aa: "bb"});
@@ -403,7 +403,7 @@ Tinytest.addAsync('Client - Triggers - redirect by routeName', function(test, ne
     name: rand
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     name: rand2,
     action: function(_params, queryParams) {
       log.push(2);
@@ -412,8 +412,8 @@ Tinytest.addAsync('Client - Triggers - redirect by routeName', function(test, ne
     name: rand2
   });
 
-  FlowRouter.go('/');
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/');
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
     test.equal(log, [2]);
@@ -425,7 +425,7 @@ Tinytest.addAsync('Client - Triggers - redirect from exit', function(test, next)
   var rand = Random.id(), rand2 = Random.id(), rand3 = Random.id();
   var log = [];
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function() {
       log.push(1);
     },
@@ -439,22 +439,22 @@ Tinytest.addAsync('Client - Triggers - redirect from exit', function(test, next)
     ]
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     action: function() {
       log.push(2);
     }
   });
 
-  FlowRouter.route('/' + rand3, {
+  FineRouter.route('/' + rand3, {
     action: function() {
       log.push(3);
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
     
     setTimeout(function() {
       test.equal(log, [1, 3]);
@@ -468,7 +468,7 @@ Tinytest.addAsync('Client - Triggers - redirect to external URL fails', function
   var log = [];
 
   // testing "http://" URLs
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     triggersEnter: [function(context, redirect) {
       test.throws(function() {
           redirect("http://example.com/")
@@ -481,7 +481,7 @@ Tinytest.addAsync('Client - Triggers - redirect to external URL fails', function
   });
 
   // testing "https://" URLs
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     triggersEnter: [function(context, redirect) {
       test.throws(function() {
           redirect("https://example.com/")
@@ -493,9 +493,9 @@ Tinytest.addAsync('Client - Triggers - redirect to external URL fails', function
     name: rand2
   });
 
-  FlowRouter.go('/');
-  FlowRouter.go('/' + rand);
-  FlowRouter.go('/' + rand2);
+  FineRouter.go('/');
+  FineRouter.go('/' + rand);
+  FineRouter.go('/' + rand2);
 
   setTimeout(function() {
     test.equal(log, []);
@@ -507,7 +507,7 @@ Tinytest.addAsync('Client - Triggers - stop callback from enter', function(test,
   var rand = Random.id();
   var log = [];
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     triggersEnter: [function(context, redirect, stop) {
       log.push(10);
       stop();
@@ -519,8 +519,8 @@ Tinytest.addAsync('Client - Triggers - stop callback from enter', function(test,
     }
   });
 
-  FlowRouter.go('/');
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/');
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
     test.equal(log, [10]);
@@ -536,30 +536,30 @@ function(test, next) {
   var paths = ['/' + rand2, '/' + rand];
   var done = false;
 
-  FlowRouter.route('/' + rand, {
+  FineRouter.route('/' + rand, {
     action: function(_params) {
       log.push(1);
     }
   });
 
-  FlowRouter.route('/' + rand2, {
+  FineRouter.route('/' + rand2, {
     action: function(_params) {
       log.push(2);
     }
   });
 
-  FlowRouter.triggers.enter([function(context) {
+  FineRouter.triggers.enter([function(context) {
     if(done) return;
     test.equal(context.path, paths.pop());
     log.push(0);
   }]);
 
   Tracker.autorun(function(c) {
-    FlowRouter.go('/' + rand);
+    FineRouter.go('/' + rand);
   });
 
   setTimeout(function() {
-    FlowRouter.go('/' + rand2);
+    FineRouter.go('/' + rand2);
 
     setTimeout(function() {
       test.equal(log, [0, 1, 0, 2]);

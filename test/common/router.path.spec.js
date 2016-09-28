@@ -1,9 +1,9 @@
-Router = FlowRouter.Router;
+Router = FineRouter.Router;
 
 Tinytest.addAsync('Common - Router - validate path definition', function (test, next) {
   // path must start with '/'
   try {
-    FlowRouter.route(Random.id());
+    FineRouter.route(Random.id());
   } catch(ex) {
     next();
   }
@@ -17,7 +17,7 @@ Tinytest.add('Common - Router - path - generic', function (test) {
   };
   var expectedPath = "/blog/1001/some/superb";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });
 
@@ -35,7 +35,7 @@ Tinytest.add('Common - Router - path - queryParams', function (test) {
 
   var expectedPath = "/blog/1001/some/superb?aa=100&bb=200";
 
-  var path = FlowRouter.path(pathDef, fields, queryParams);
+  var path = FineRouter.path(pathDef, fields, queryParams);
   test.equal(path, expectedPath);
 });
 
@@ -48,7 +48,7 @@ Tinytest.add('Common - Router - path - just queryParams', function (test) {
 
   var expectedPath = "/blog/abc?aa=100&bb=200";
 
-  var path = FlowRouter.path(pathDef, null, queryParams);
+  var path = FineRouter.path(pathDef, null, queryParams);
   test.equal(path, expectedPath);
 });
 
@@ -60,13 +60,13 @@ Tinytest.add('Common - Router - path - missing fields', function (test) {
   };
   var expectedPath = "/blog/1001/some";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });
 
 Tinytest.add('Common - Router - path - no fields', function (test) {
   var pathDef = "/blog/blogId/some/name";
-  var path = FlowRouter.path(pathDef);
+  var path = FineRouter.path(pathDef);
   test.equal(path, pathDef);
 });
 
@@ -78,7 +78,7 @@ Tinytest.add('Common - Router - path - complex route', function (test) {
   };
   var expectedPath = "/blog/1001/some/20";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });
 
@@ -89,7 +89,7 @@ Tinytest.add('Common - Router - path - optional last param missing', function (t
   };
   var expectedPath = "/blog/1001/some";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });
 
@@ -101,7 +101,7 @@ Tinytest.add('Common - Router - path - optional last param exists', function (te
   };
   var expectedPath = "/blog/1001/some/20";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });
 
@@ -113,7 +113,7 @@ Tinytest.add('Common - Router - path - remove trailing slashes', function (test)
   };
   var expectedPath = "/blog/1001/some/superb";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });
 
@@ -121,7 +121,7 @@ Tinytest.add('Common - Router - path - handle multiple slashes', function (test)
   var pathDef = "/blog///some/hi////";
   var expectedPath = "/blog/some/hi";
 
-  var path = FlowRouter.path(pathDef);
+  var path = FineRouter.path(pathDef);
   test.equal(path, expectedPath);
 });
 
@@ -130,6 +130,6 @@ Tinytest.add('Common - Router - path - keep the root slash', function (test) {
   var fields = {};
   var expectedPath = "/";
 
-  var path = FlowRouter.path(pathDef, fields);
+  var path = FineRouter.path(pathDef, fields);
   test.equal(path, expectedPath);
 });

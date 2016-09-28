@@ -1,18 +1,18 @@
 FastRenderColl = new Mongo.Collection('fast-render-coll');
 
-FlowRouter.route('/the-fast-render-route', {
+FineRouter.route('/the-fast-render-route', {
   subscriptions: function() {
     this.register('data', Meteor.subscribe('fast-render-data'));
   }
 });
 
-FlowRouter.route('/the-fast-render-route-params/:id', {
+FineRouter.route('/the-fast-render-route-params/:id', {
   subscriptions: function(params, queryParams) {
     this.register('data', Meteor.subscribe('fast-render-data-params', params, queryParams));
   }
 });
 
-FlowRouter.route('/no-fast-render', {
+FineRouter.route('/no-fast-render', {
   subscriptions: function() {
     if(Meteor.isClient) {
       this.register('data', Meteor.subscribe('fast-render-data'));
@@ -20,7 +20,7 @@ FlowRouter.route('/no-fast-render', {
   }
 });
 
-var frGroup = FlowRouter.group({
+var frGroup = FineRouter.group({
   prefix: "/fr"
 });
 

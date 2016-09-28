@@ -1,4 +1,4 @@
-Route = FlowRouter.Route;
+Route = FineRouter.Route;
 
 
 Tinytest.addAsync('Client - Route - Reactivity - getParam', function (test, done) {

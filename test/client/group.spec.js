@@ -4,7 +4,7 @@ Tinytest.add('Client - Group - validate path definition', function (test, next) 
     new Group(null, {prefix: Random.id()});
   });
 
-  var group = FlowRouter.group({prefix: '/' + Random.id()});
+  var group = FineRouter.group({prefix: '/' + Random.id()});
 
   test.throws(function() {
     group.route(Random.id());
@@ -16,7 +16,7 @@ Tinytest.addAsync('Client - Group - define and go to route with prefix', functio
   var rand = Random.id();
   var rendered = 0;
 
-  var group = FlowRouter.group({prefix: '/' + prefix});
+  var group = FineRouter.group({prefix: '/' + prefix});
 
   group.route('/' + rand, {
     action: function(_params) {
@@ -24,7 +24,7 @@ Tinytest.addAsync('Client - Group - define and go to route with prefix', functio
     }
   });
 
-  FlowRouter.go('/' + prefix + '/' + rand);
+  FineRouter.go('/' + prefix + '/' + rand);
 
   setTimeout(function() {
     test.equal(rendered, 1);
@@ -36,7 +36,7 @@ Tinytest.addAsync('Client - Group - define and go to route without prefix', func
   var rand = Random.id();
   var rendered = 0;
 
-  var group = FlowRouter.group();
+  var group = FineRouter.group();
 
   group.route('/' + rand, {
     action: function(_params) {
@@ -44,7 +44,7 @@ Tinytest.addAsync('Client - Group - define and go to route without prefix', func
     }
   });
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
 
   setTimeout(function() {
     test.equal(rendered, 1);
@@ -55,7 +55,7 @@ Tinytest.addAsync('Client - Group - define and go to route without prefix', func
 Tinytest.addAsync('Client - Group - subscribe', function (test, next) {
   var rand = Random.id();
 
-  var group = FlowRouter.group({
+  var group = FineRouter.group({
     subscriptions: function (params) {
       this.register('baz', Meteor.subscribe('baz'));
     }
@@ -63,7 +63,7 @@ Tinytest.addAsync('Client - Group - subscribe', function (test, next) {
 
   group.route('/' + rand);
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
   setTimeout(function() {
     test.isTrue(!!GetSub('baz'));
     next();
@@ -75,15 +75,15 @@ Tinytest.addAsync('Client - Group - set and retrieve group name', function (test
   var rand = Random.id();
   var name = Random.id();
 
-  var group = FlowRouter.group({
+  var group = FineRouter.group({
     name: name
   });
 
   group.route('/' + rand);
 
-  FlowRouter.go('/' + rand);
+  FineRouter.go('/' + rand);
   setTimeout(function() {
-    test.isTrue(FlowRouter.current().route.group.name === name);
+    test.isTrue(FineRouter.current().route.group.name === name);
     next();
   }, 100);
 });
@@ -95,7 +95,7 @@ Tinytest.add('Client - Group - expose group options on a route', function (test)
   var data = {aa: 10};
   var layout = 'blah';
 
-  var group = FlowRouter.group({
+  var group = FineRouter.group({
     name: groupName,
     prefix: '/admin',
     layout: layout,
@@ -106,7 +106,7 @@ Tinytest.add('Client - Group - expose group options on a route', function (test)
     name: name
   });
 
-  var route = FlowRouter._routesMap[name];
+  var route = FineRouter._routesMap[name];
 
   test.equal(route.group.options.someData, data);
   test.equal(route.group.options.layout, layout);

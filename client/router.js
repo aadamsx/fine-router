@@ -27,7 +27,7 @@ Router = function () {
   this.notFound = this.notfound = null;
   // indicate it's okay (or not okay) to run the tracker
   // when doing subscriptions
-  // using a number and increment it help us to support FlowRouter.go()
+  // using a number and increment it help us to support FineRouter.go()
   // and legitimate reruns inside tracker on the same event loop.
   // this is a solution for #145
   this.safeToRun = 0;
@@ -51,11 +51,11 @@ Router = function () {
   // redirect function used inside triggers
   this._redirectFn = function(pathDef, fields, queryParams) {
     if (/^http(s)?:\/\//.test(pathDef)) {
-        var message = "Redirects to URLs outside of the app are not supported in this version of Flow Router. Use 'window.location = yourUrl' instead";
+        var message = "Redirects to URLs outside of the app are not supported in this version of Fine Router. Use 'window.location = yourUrl' instead";
         throw new Error(message);
     }
     self.withReplaceState(function() {
-      var path = FlowRouter.path(pathDef, fields, queryParams);
+      var path = FineRouter.path(pathDef, fields, queryParams);
       self._page.redirect(path);
     });
   };
@@ -356,7 +356,7 @@ Router.prototype.initialize = function(options) {
   options = options || {};
 
   if(this._initialized) {
-    throw new Error("FlowRouter is already initialized");
+    throw new Error("FineRouter is already initialized");
   }
 
   var self = this;
@@ -557,7 +557,7 @@ Router.prototype._initTriggersAPI = function() {
 
 Router.prototype.wait = function() {
   if(this._initialized) {
-    throw new Error("can't wait after FlowRouter has been initialized");
+    throw new Error("can't wait after FineRouter has been initialized");
   }
 
   this._askedToWait = true;

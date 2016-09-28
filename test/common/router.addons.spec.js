@@ -1,11 +1,11 @@
-Router = FlowRouter.Router;
+Router = FineRouter.Router;
 
 Tinytest.addAsync('Common - Addons - onRouteRegister basic usage', function (test, done) {
   var name = Random.id();
   var customField = Random.id();
   var pathDef = '/' + name;
   
-  FlowRouter.onRouteRegister(function(route) {
+  FineRouter.onRouteRegister(function(route) {
     test.equal(route, {
       pathDef: pathDef,
 
@@ -15,11 +15,11 @@ Tinytest.addAsync('Common - Addons - onRouteRegister basic usage', function (tes
       name: name,
       options: {customField: customField}
     });  
-    FlowRouter._onRouteCallbacks = [];
+    FineRouter._onRouteCallbacks = [];
     done();
   });
 
-  FlowRouter.route(pathDef, {
+  FineRouter.route(pathDef, {
     name: name,
     action: function() {},
     subscriptions: function() {},

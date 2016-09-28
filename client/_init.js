@@ -1,11 +1,11 @@
 // Export Router Instance
-FlowRouter = new Router();
-FlowRouter.Router = Router;
-FlowRouter.Route = Route;
+FineRouter = new Router();
+FineRouter.Router = Router;
+FineRouter.Route = Route;
 
-// Initialize FlowRouter
+// Initialize FineRouter
 Meteor.startup(function () {
-  if(!FlowRouter._askedToWait) {
-    FlowRouter.initialize();
+  if(!FineRouter._askedToWait) {
+    FineRouter.initialize();
   }
 });

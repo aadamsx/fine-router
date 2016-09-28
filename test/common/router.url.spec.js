@@ -6,6 +6,6 @@ Tinytest.add('Common - Router - url - generic', function (test) {
   };
   var expectedUrl = Meteor.absoluteUrl('blog/1001/some/superb');
 
-  var path = FlowRouter.url(pathDef, fields);
+  var path = FineRouter.url(pathDef, fields);
   test.equal(path, expectedUrl);
 });

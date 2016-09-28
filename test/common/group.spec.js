@@ -4,7 +4,7 @@ Tinytest.add('Common - Group - expose group options', function (test) {
   var data = {aa: 10};
   var layout = 'blah';
 
-  var group = FlowRouter.group({
+  var group = FineRouter.group({
     name: name,
     prefix: '/admin',
     layout: layout,
