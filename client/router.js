@@ -344,8 +344,10 @@ Router.prototype._notfoundRoute = function(context) {
   // XXX this.notfound kept for backwards compatibility
   this.notFound = this.notFound || this.notfound;
   if(!this.notFound) {
-    console.error("There is no route for the path:", context.path);
-    return;
+	if(!Meteor.isTest && !Meteor.isPackageTest && !Meteor.isAppTest) {
+	  console.error("There is no route for the path:", context.path);
+	}
+	return;
   }
 
   this._current.route = new Route(this, "*", this.notFound);
